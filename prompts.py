@@ -66,11 +66,30 @@ Your goal is to precisely extract the following information from the PDF:
 3. Buyer Name
 
 Follow these guidelines:
-- Carefully review the entire PDF content to locate the required information.
-- If any of the requested information is not present in the PDF, use "N/A" for that field.
-- If you are unsure about any piece of information or if it's ambiguous, use "Unclear" instead of
+
+1. Carefully review the entire PDF content to locate the required information.
+2. If any of the requested information is not present in the PDF, use "N/A" for that field.
+3. Requestor or Requested By is never the Buyer Name or Seller Name
+4. Make sure you extract the name exactly as it appears in the document
+5. Contact Name without any clarification is never the Seller or Buyer Name
+6. If you are unsure about any piece of information or if it's ambiguous, use "Unclear" instead of
 guessing.
-- Do not infer or assume information that is not explicitly stated in the document.
+7. Do not infer or assume information that is not explicitly stated in the document.
+8. Sometimes the Propery Address, Seller Name or Buyer Name are on two (multiple) lines - make sure you grab all lines.
+9. These files sometimes have text in two columns or tables - be aware to not go to the second column or different table when extracting the information properly
+10. For Buyer Name consider these cases:
+    a. Sometimes the document doesn't have Buyer Name but just Buyer - that's ok - just extract Buyer
+    d. Purchaser Name is the same as Buyer Name
+    e. If any of the names are "New Owners" or similar mark it as Unclear
+11. For Seller Name consider these cases:
+    a. Sometimes the document doesn't have Seller Name but just Seller - that's ok - just extract Seller
+    d. Owner Name or Property Owner is the same as Seller Name
+    e. If any of the names are "New Owners" or similar mark it as Unclear
+12. For Property Address consider these cases:
+    a. Sometimes the Property Address is under Property Information
+
+   
+    f. Contact Name without any clarification is never the Seller or Buyer Name
 
 Provide your findings in the following format:
 
