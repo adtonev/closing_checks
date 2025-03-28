@@ -105,4 +105,98 @@ your review and extraction process.
 
 Here is the content to analyze:
 {content}
+"""
+
+# Prompt for extracting violations, liens, and collections information
+VIOLATIONS_PROMPT = """You are tasked with reviewing a PDF document and determining if there are any violations, liens,
+collections, or similar issues. Here is the content of the PDF:
+
+Your task is to carefully review this content and determine if there are any:
+1. Violations
+2. Liens
+3. Collections
+4. Anything similar to the above
+
+Important definitions:
+- Violations: Any breach of rules, regulations, or laws
+- Liens: Legal claims against property for unpaid debts
+- Collections: Attempts to recover money owed
+
+Guidelines for answering:
+- If you find evidence of any of the above, answer "Yes" and provide details
+- If you find no information about these issues, answer "N/A"
+- If you find explicit information that there are no such issues, answer "No" without additional
+details
+- Ignore regular assessments, fees, or dues that are due or outstanding - these are not what we're
+checking for
+- If you have any doubts about the information, it's better to answer "Unclear" rather than risk
+providing incorrect information
+
+Carefully review the PDF content. Then, provide your answer in the following format:
+
+<answer>
+Violations: [Yes/No/N/A/Unclear]
+[If Yes, provide details]
+
+Liens: [Yes/No/N/A/Unclear]
+[If Yes, provide details]
+
+Collections: [Yes/No/N/A/Unclear]
+[If Yes, provide details]
+
+Other similar issues: [Yes/No/N/A/Unclear]
+[If Yes, provide details]
+</answer>
+
+Remember, accuracy is critical for this task. If you're unsure about any aspect, err on the side of
+caution and indicate that the information is unclear.
+
+Here is the content to analyze:
+{content}
+"""
+
+# Prompt for extracting assessment information
+ASSESSMENTS_PROMPT = """You are tasked with reviewing a PDF file containing information about property assessments and dues.
+Your goal is to extract specific information accurately. Here is the content of the PDF:
+
+Carefully review the content above and extract the following information:
+
+1. Amount of regular assessments (dues)
+2. The frequency of the assessments (dues)
+3. The date assessments (dues) are paid through
+4. The next due date for assessments (dues)
+5. Any outstanding balance
+6. Is the property delinquent - Yes or No
+
+Guidelines for extraction:
+- Look for explicit statements or sections that clearly indicate each piece of information.
+- Pay attention to dates, dollar amounts, and terms like "monthly," "quarterly," or "annual" for
+frequency.
+- For delinquency, look for clear statements about the account status or any past due amounts.
+
+If any information is not clearly stated or cannot be found, use "N/A" (Not Available) for that
+item. If you are unsure about any information, use "Unclear" instead of guessing.
+
+Provide your findings in the following format:
+
+<extraction>
+1. Regular assessment amount: [Amount or N/A or Unclear]
+2. Assessment frequency: [Frequency or N/A or Unclear]
+3. Paid through date: [Date or N/A or Unclear]
+4. Next due date: [Date or N/A or Unclear]
+5. Outstanding balance: [Amount or N/A or Unclear]
+6. Delinquent: [Yes or No or N/A or Unclear]
+</extraction>
+
+After providing the extraction, briefly explain your reasoning for each item in a separate section:
+
+<reasoning>
+[Provide a brief explanation for each extracted item, including why you chose N/A or Unclear if
+applicable]
+</reasoning>
+
+Remember, accuracy is crucial. It's better to state "Unclear" than to provide incorrect information.
+
+Here is the content to analyze:
+{content}
 """ 
