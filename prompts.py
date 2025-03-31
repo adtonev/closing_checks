@@ -108,7 +108,8 @@ Here is the content to analyze:
 """
 
 # Prompt for extracting violations, liens, and collections information
-VIOLATIONS_PROMPT = """You are an expert legal and financial analyst tasked with reviewing property documents for potential issues. Your goal is to carefully examine the provided PDF content and identify any violations, liens, collections, delinquencies, or similar issues that may affect the property's status.
+VIOLATIONS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings. Your goal is to carefully examine the provided PDF content from a document used for real estate closingsand identify any violations, liens, collections, delinquencies, or similar issues that may affect the property's status. 
+
 
 Here is the content of the PDF document you need to analyze:
 
@@ -121,17 +122,19 @@ Your task is to thoroughly review this content and determine if there are any:
 2. Liens
 3. Collections
 4. Delinquencies
-5. Any other similar issues
+5. Special Assessments
+6. Any other similar issues
 
 Important definitions:
 - Violations: Any breach of rules, regulations, or laws related to the property
 - Liens: Legal claims against the property for unpaid debts
 - Collections: Attempts to recover money owed related to the property
 - Delinquencies: Overdue payments or unfulfilled financial obligations related to the property
+- Special Assessments: Additional fees imposed on property owners for specific improvements or services
 
 Instructions:
 1. Carefully read through the entire PDF content.
-2. For each category (violations, liens, collections, delinquencies, and other similar issues), determine if there is evidence of any issues.
+2. For each category (violations, liens, collections, delinquencies, special assessments, and other similar issues), determine if there is evidence of any issues.
 3. Use the following criteria for your answers:
    - Answer "Yes" if you find clear evidence of an issue, and provide specific details.
    - Answer "No" if you find explicit information stating there are no such issues.
@@ -139,6 +142,10 @@ Instructions:
    - Answer "Unclear" if the information is ambiguous or you have any doubts, and explain why.
 4. Ignore regular assessments, fees, or dues that are due or outstanding - these are not what we're checking for.
 5. Accuracy is critical. If you're unsure about any aspect, err on the side of caution and indicate that the information is unclear.
+6. You should ignore anything hypothetical and only consider active, known, recorded, definitive, or explicit violations, liens, collections, delinquencies, special assessments, or other issues.
+7. You should ignore information that might be in other documents unless these documents are explicitely mentioned as attached to the document you are reviewing.
+8. If the document states that there are no active, known, recorded, definitive, explicit violations, liens, collections, delinquencies, or special assessments then ignore disclaimers.
+9. If the response in the document field is blank then treat it as No.
 
 Before providing your final extraction, wrap your analysis inside <document_review> tags. In this section:
 - List potential indicators or keywords for each category (violations, liens, collections, delinquencies, and other similar issues).
@@ -163,6 +170,9 @@ Collections: [Yes/No/N/A/Unclear]
 Delinquencies: [Yes/No/N/A/Unclear]
 [If Yes or Unclear, provide details and context]
 
+Special Assessments: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
+
 Other similar issues: [Yes/No/N/A/Unclear]
 [If Yes or Unclear, provide details and context]
 </extraction>
@@ -170,7 +180,7 @@ Other similar issues: [Yes/No/N/A/Unclear]
 Remember, hyper-accuracy is crucial for this task. Take your time to carefully analyze the document and provide well-reasoned, detailed responses when necessary."""
 
 # Prompt for Gemini 2.5 Pro model - thinking-based approach
-VIOLATIONS_PROMPT_THINKING = """You are an expert legal and financial analyst specializing in property document review. Your task is to carefully examine the content of a property-related document and identify any potential issues that may affect the property's status.
+VIOLATIONS_PROMPT_THINKING = """You are a highly experienced Title & Escrow officer working on real estate closings. Your goal is to carefully examine the provided PDF content from a document used for real estate closingsand identify any violations, liens, collections, delinquencies, or similar issues that may affect the property's status. 
 
 Here is the content of the document you need to analyze:
 
@@ -183,17 +193,19 @@ Your primary objective is to thoroughly review this content and determine if the
 2. Liens
 3. Collections
 4. Delinquencies
-5. Any other similar issues
+5. Special Assessments
+6. Any other similar issues
 
 Key Definitions:
 - Violations: Breaches of rules, regulations, or laws related to the property
 - Liens: Legal claims against the property for unpaid debts
 - Collections: Attempts to recover money owed related to the property
 - Delinquencies: Overdue payments or unfulfilled financial obligations related to the property
+- Special Assessments: Fees charged by a governing body for specific improvements or services
 
 Instructions:
 1. Read the entire document content carefully.
-2. For each category (violations, liens, collections, delinquencies, and other similar issues), analyze whether there is evidence of any issues.
+2. For each category (violations, liens, collections, delinquencies, special assessments, and other similar issues), analyze whether there is evidence of any issues.
 3. Use the following criteria for your answers:
    - "Yes" if you find clear evidence of an issue. Provide specific details.
    - "No" if you find explicit information stating there are no such issues.
@@ -201,6 +213,10 @@ Instructions:
    - "Unclear" if the information is ambiguous or you have doubts. Explain your reasoning.
 4. Disregard regular assessments, fees, or dues that are due or outstanding.
 5. Prioritize accuracy. If you're unsure about any aspect, indicate that the information is unclear.
+6. You should ignore anything hypothetical and only consider active, known, recorded, definitive, or explicit violations, liens, collections, delinquencies, special assessments, or other issues.
+7. You should ignore information that might be in other documents unless these documents are explicitely mentioned as attached to the document you are reviewing.
+8. If the document states that there are no active, known, recorded, definitive, explicit violations, liens, collections, delinquencies, or special assessments then ignore disclaimers.
+9. If the response in the document field is blank then treat it as No.
 
 Before providing your final extraction, conduct a thorough analysis in <analysis> tags inside your thinking block. In this section:
 - List potential indicators or keywords for each category.
@@ -226,6 +242,9 @@ Collections: [Yes/No/N/A/Unclear]
 Delinquencies: [Yes/No/N/A/Unclear]
 [If Yes or Unclear, provide details and context]
 
+Special Assessments: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
+
 Other similar issues: [Yes/No/N/A/Unclear]
 [If Yes or Unclear, provide details and context]
 </extraction>
@@ -241,47 +260,98 @@ Your thorough and accurate analysis is crucial for making informed decisions abo
 Your final output should consist only of the extraction and should not duplicate or rehash any of the work you did in the analysis section."""
 
 # Prompt for extracting assessment information
-ASSESSMENTS_PROMPT = """You are tasked with reviewing a PDF file containing information about property assessments and dues.
-Your goal is to extract specific information accurately. Here is the content of the PDF:
+ASSESSMENTS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings. You are specializing in extracting specific financial information from real estate documents. Your task is to analyze the following PDF content and extract key details about regular assessments (dues).
 
-Carefully review the content above and extract the following information:
+Here is the content of the PDF to analyze:
 
+<pdf_content>
+{{PDF_CONTENT}}
+</pdf_content>
+
+Your goal is to extract the following information:
 1. Amount of regular assessments (dues)
 2. The frequency of the assessments (dues)
-3. The date assessments (dues) are paid through
-4. The next due date for assessments (dues)
-5. Any outstanding balance
-6. Is the property delinquent - Yes or No
+3. Any outstanding balance
 
-Guidelines for extraction:
-- Look for explicit statements or sections that clearly indicate each piece of information.
-- Pay attention to dates, dollar amounts, and terms like "monthly," "quarterly," or "annual" for
-frequency.
-- For delinquency, look for clear statements about the account status or any past due amounts.
+Important Guidelines:
+- Focus only on regular assessments (dues). Ignore transfer, move-in, move-out, or additional closing fees.
+- Extract precise numbers without additional text.
+- The assessment amount might be the sum of all recurring service fees.
+- "Property Assessment" may be synonymous with "Assessment (Dues)".
+- Prioritize current numbers over past ones if there's a contradiction.
+- Look for an "Assessment Data" section for relevant information.
+- Simplify frequency terms (e.g., "per Month" to "Monthly", "per Year" to "Annually").
+- Don't infer information; use only directly mentioned data.
+- If all recurring fees have the same frequency, use that frequency.
 
-If any information is not clearly stated or cannot be found, use "N/A" (Not Available) for that
-item. If you are unsure about any information, use "Unclear" instead of guessing.
+Process:
+1. Carefully read through the PDF content.
+2. Write your analysis inside <detailed_breakdown> tags:
+   - Quote relevant sections from the PDF content for each piece of information we're looking for.
+   - List out all recurring fees you find, with their amounts and frequencies.
+   - Identify relevant sections or statements related to each piece of information.
+   - Explain how you determined each value or why you couldn't find it.
+   - Show any calculations or reasoning used to arrive at your conclusions, including summing up fees or converting frequencies.
+3. Provide your final extraction in <extraction> tags.
+4. Summarize your reasoning for each extracted item in <reasoning> tags.
 
-Provide your findings in the following format:
+Use "N/A" (Not Available) if information is not clearly stated or cannot be found. Use "Unclear" if you are unsure about any information.
+
+Example output structure:
+
+<detailed_breakdown>
+[Your detailed analysis of the PDF content, showing your thought process for each item]
+</detailed_breakdown>
 
 <extraction>
 1. Regular assessment amount: [Amount or N/A or Unclear]
 2. Assessment frequency: [Frequency or N/A or Unclear]
-3. Paid through date: [Date or N/A or Unclear]
-4. Next due date: [Date or N/A or Unclear]
-5. Outstanding balance: [Amount or N/A or Unclear]
-6. Delinquent: [Yes or No or N/A or Unclear]
+3. Outstanding balance: [Amount or N/A or Unclear]
 </extraction>
 
-After providing the extraction, briefly explain your reasoning for each item in a separate section:
-
 <reasoning>
-[Provide a brief explanation for each extracted item, including why you chose N/A or Unclear if
-applicable]
+[Brief explanation for each extracted item, including why you chose N/A or Unclear if applicable]
 </reasoning>
 
-Remember, accuracy is crucial. It's better to state "Unclear" than to provide incorrect information.
+Remember, accuracy is crucial. It's better to state "Unclear" than to provide incorrect information. Please proceed with your analysis and extraction based on the provided PDF content.
+"""
 
-Here is the content to analyze:
+# Prompt for analyzing document attachments
+ATTACHMENTS_PROMPT = """You are tasked with reviewing a PDF document to determine if there is any mention of attachments or
+attached documents. This task is mission critical, so accuracy is of utmost importance. Please
+follow these instructions carefully:
+
+1. Carefully read through the following PDF content:
+
+<pdf_content>
 {content}
-""" 
+</pdf_content>
+
+2. As you review the content, pay close attention to any words or phrases that might indicate the
+presence of attachments or additional documents. Look for keywords such as:
+- "attachment"
+- "attached"
+- "enclosed"
+- "appended"
+- "accompanying document"
+- "see attached"
+- "please find attached"
+
+3. After your thorough review, provide your answer in the following format:
+
+<answer>
+[Your response here]
+</answer>
+
+4. Your response should be one of two options:
+a. If there is no mention of attachments or attached documents, simply write:
+No
+
+b. If there is mention of attachments or attached documents, write:
+Yes, [name of the attached document(s)]
+
+5. Remember, this task is mission critical. Double-check your answer before providing it. Make sure
+you have not missed any mentions of attachments, no matter how subtle they might be.
+
+6. Do not include any additional explanations or justifications in your answer. Stick strictly to
+the format provided in step 4."""
