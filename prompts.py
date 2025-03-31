@@ -355,3 +355,48 @@ you have not missed any mentions of attachments, no matter how subtle they might
 
 6. Do not include any additional explanations or justifications in your answer. Stick strictly to
 the format provided in step 4."""
+
+# Prompt for identifying additional associations and districts
+EXTRA_ASSOCIATIONS_PROMPT = """You are tasked with reviewing a PDF document to identify any mentions of additional homeowners
+associations or special districts. This task is critically important and requires careful attention
+to detail.
+
+First, you will be provided with the content of the PDF document:
+
+<pdf_content>
+{content}
+</pdf_content>
+
+Carefully read and analyze the entire content of the PDF. Pay close attention to any mentions of:
+
+1. Homeowners associations (HOAs), including:
+- Sub associations
+- Master associations
+- Any other type of association related to property management
+
+2. Special districts, such as:
+- Metro districts
+- Water districts
+- Fire districts
+- Any other type of special district
+
+After your analysis, provide your answer in the following format:
+
+1. If there are no mentions of additional homeowners associations or special districts:
+<answer>No</answer>
+
+2. If there are mentions of additional entities:
+<answer>Yes, [Name of Entity 1], [Name of Entity 2], ...</answer>
+
+List all relevant entities found, separated by commas.
+
+Remember, accuracy is crucial for this task. Double-check your findings before providing your
+answer.
+
+Examples of correct responses:
+1. <answer>No</answer>
+2. <answer>Yes, Lakeside Master Association, Cherry Creek Water District</answer>
+3. <answer>Yes, Pinecrest Sub Association</answer>
+
+Ensure that your response is precise and based solely on the information provided in the PDF
+content. Do not make assumptions or include information not explicitly mentioned in the document."""
