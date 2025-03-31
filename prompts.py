@@ -400,3 +400,134 @@ Examples of correct responses:
 
 Ensure that your response is precise and based solely on the information provided in the PDF
 content. Do not make assumptions or include information not explicitly mentioned in the document."""
+
+# Prompt for analyzing document costs and rush fees
+DOC_COSTS_PROMPT = """You are tasked with reviewing a PDF document and answering specific questions about its content. The
+content of the PDF is provided below:
+
+<pdf_content>
+{content}
+</pdf_content>
+
+Carefully read and analyze the content above. Your task is to answer four specific questions about
+the document. It is crucial that you answer these questions accurately and precisely, as getting
+this right is mission critical.
+
+For each question, follow these specific instructions:
+
+1. How much does the document cost?
+- Look for any mention of document cost or fees.
+- Answer with a number (e.g., 50) or N/A if not applicable.
+- Do not include any currency symbols or additional text.
+
+2. Was it ordered on a rush?
+- Look for any indication of rush or expedited service.
+- Answer with Yes or No only.
+- Do not include any additional explanation.
+
+3. How much is the rush fee?
+- If a rush service was indicated, look for the associated fee.
+- Answer with a number (e.g., 25) or N/A if notapplicable.
+- Do not include any currency symbols or additional text.
+
+4. Are the document cost and rush fee prepaid or are they owed at closing?
+- Look for information about when the fees are to be paid.
+- Answer with one of these exact phrases: "pre-paid", "due at closing", or "N/A".
+- Use "N/A" if the information is unclear or not provided.
+
+After analyzing the document, provide your answers in the following format:
+
+<answers>
+1. [Insert answer for document cost]
+2. [Insert answer for rush order]
+3. [Insert answer for rush fee]
+4. [Insert answer for payment timing]
+</answers>
+
+Remember, precision is key. Only include the exact answers as instructed, with no additional text or
+explanations. Double-check your answers to ensure they accurately reflect the information in the
+document."""
+
+# Prompt for extracting HOA and property management company names
+HOA_NAMES_PROMPT = """You are tasked with reviewing a PDF document to extract specific information. This task is
+mission-critical, and accuracy is of utmost importance. The PDF content is provided below:
+
+<pdf_content>
+{content}
+</pdf_content>
+
+Your task is to carefully review the above PDF content and precisely identify two pieces of
+information:
+
+1. The name of the homeowners association (HOA)
+2. The name of the property management company (PM)
+
+Instructions:
+1. Thoroughly read through the entire PDF content.
+2. Look for any mentions of a homeowners association, HOA, or similar terms that would indicate the
+name of the HOA.
+3. Search for references to a property management company, property manager, or similar terms that
+would reveal the name of the PM.
+4. If you find the information, extract it exactly as it appears in the document.
+5. If you cannot find the information for either the HOA or PM, use "N/A" for that field.
+
+Provide your answer in the following format:
+<answer>
+HOA: [Name of HOA or N/A]
+PM: [Name of Property Management Company or N/A]
+</answer>
+
+Remember:
+- Only provide the name or N/A - do not include any additional text or explanations.
+- Accuracy is crucial. Double-check your findings before submitting your answer.
+- If you're unsure about a name, use N/A rather than guessing.
+
+Example of expected output:
+<answer>
+HOA: Sunnyville Estates Homeowners Association
+PM: N/A
+</answer>
+
+Please proceed with the review and provide your findings in the specified format."""
+
+# Prompt for determining if buyer approval is required
+BUYER_APPROVAL_PROMPT = """You are tasked with reviewing a PDF document and determining if buyer approval is required. This
+task is mission critical, so it's essential to be precise and accurate in your analysis.
+
+First, carefully read through the following PDF content:
+
+<pdf_content>
+{content}
+</pdf_content>
+
+Your task is to determine if buyer approval is required based on the information provided in the
+PDF. Here's how to approach this task:
+
+1. Thoroughly review the entire PDF content, paying close attention to any mentions of buyer
+approval, authorization processes, or decision-making requirements.
+
+2. Look for explicit statements about buyer approval being necessary for any actions or decisions.
+
+3. If you find any information indicating that buyer approval is required, note the specific
+details, including under what circumstances, for what actions, and any relevant procedures or
+timelines.
+
+4. If you don't find any information about buyer approval being required, consider this as a "No"
+answer.
+
+5. Be cautious not to infer or assume buyer approval is required unless it is explicitly stated in
+the document.
+
+Format your answer as follows:
+
+1. Start with either "No" or "Yes" to directly answer whether buyer approval is required.
+
+2. If the answer is "Yes," provide a detailed explanation of the buyer approval requirements,
+including any relevant quotes from the PDF (use quotation marks for direct quotes).
+
+3. If the answer is "No," simply state that no information regarding buyer approval requirements was
+found in the document.
+
+4. Enclose your entire response in <answer> tags.
+
+Now, please analyze the PDF content and provide your findings in the specified format."""
