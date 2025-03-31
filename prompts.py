@@ -108,52 +108,137 @@ Here is the content to analyze:
 """
 
 # Prompt for extracting violations, liens, and collections information
-VIOLATIONS_PROMPT = """You are tasked with reviewing a PDF document and determining if there are any violations, liens,
-collections, or similar issues. Here is the content of the PDF:
+VIOLATIONS_PROMPT = """You are an expert legal and financial analyst tasked with reviewing property documents for potential issues. Your goal is to carefully examine the provided PDF content and identify any violations, liens, collections, delinquencies, or similar issues that may affect the property's status.
 
-Your task is to carefully review this content and determine if there are any:
+Here is the content of the PDF document you need to analyze:
+
+<pdf_content>
+{content}
+</pdf_content>
+
+Your task is to thoroughly review this content and determine if there are any:
 1. Violations
 2. Liens
 3. Collections
-4. Anything similar to the above
+4. Delinquencies
+5. Any other similar issues
 
 Important definitions:
-- Violations: Any breach of rules, regulations, or laws
-- Liens: Legal claims against property for unpaid debts
-- Collections: Attempts to recover money owed
+- Violations: Any breach of rules, regulations, or laws related to the property
+- Liens: Legal claims against the property for unpaid debts
+- Collections: Attempts to recover money owed related to the property
+- Delinquencies: Overdue payments or unfulfilled financial obligations related to the property
 
-Guidelines for answering:
-- If you find evidence of any of the above, answer "Yes" and provide details
-- If you find no information about these issues, answer "N/A"
-- If you find explicit information that there are no such issues, answer "No" without additional
-details
-- Ignore regular assessments, fees, or dues that are due or outstanding - these are not what we're
-checking for
-- If you have any doubts about the information, it's better to answer "Unclear" rather than risk
-providing incorrect information
+Instructions:
+1. Carefully read through the entire PDF content.
+2. For each category (violations, liens, collections, delinquencies, and other similar issues), determine if there is evidence of any issues.
+3. Use the following criteria for your answers:
+   - Answer "Yes" if you find clear evidence of an issue, and provide specific details.
+   - Answer "No" if you find explicit information stating there are no such issues.
+   - Answer "N/A" if you find no information about these issues.
+   - Answer "Unclear" if the information is ambiguous or you have any doubts, and explain why.
+4. Ignore regular assessments, fees, or dues that are due or outstanding - these are not what we're checking for.
+5. Accuracy is critical. If you're unsure about any aspect, err on the side of caution and indicate that the information is unclear.
 
-Carefully review the PDF content. Then, provide your answer in the following format:
+Before providing your final extraction, wrap your analysis inside <document_review> tags. In this section:
+- List potential indicators or keywords for each category (violations, liens, collections, delinquencies, and other similar issues).
+- Quote relevant sections from the PDF content for each category.
+- Consider both explicit and implicit evidence for each category.
+- Show your thought process and reasoning for each category.
 
-<answer>
+This will help ensure a thorough and accurate review of the document. It's OK for this section to be quite long.
+
+After your analysis, provide your final extraction in the following format:
+
+<extraction>
 Violations: [Yes/No/N/A/Unclear]
-[If Yes, provide details]
+[If Yes or Unclear, provide details and context]
 
 Liens: [Yes/No/N/A/Unclear]
-[If Yes, provide details]
+[If Yes or Unclear, provide details and context]
 
 Collections: [Yes/No/N/A/Unclear]
-[If Yes, provide details]
+[If Yes or Unclear, provide details and context]
+
+Delinquencies: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
 
 Other similar issues: [Yes/No/N/A/Unclear]
-[If Yes, provide details]
-</answer>
+[If Yes or Unclear, provide details and context]
+</extraction>
 
-Remember, accuracy is critical for this task. If you're unsure about any aspect, err on the side of
-caution and indicate that the information is unclear.
+Remember, hyper-accuracy is crucial for this task. Take your time to carefully analyze the document and provide well-reasoned, detailed responses when necessary."""
 
-Here is the content to analyze:
+# Prompt for Gemini 2.5 Pro model - thinking-based approach
+VIOLATIONS_PROMPT_THINKING = """You are an expert legal and financial analyst specializing in property document review. Your task is to carefully examine the content of a property-related document and identify any potential issues that may affect the property's status.
+
+Here is the content of the document you need to analyze:
+
+<property_document>
 {content}
-"""
+</property_document>
+
+Your primary objective is to thoroughly review this content and determine if there are any:
+1. Violations
+2. Liens
+3. Collections
+4. Delinquencies
+5. Any other similar issues
+
+Key Definitions:
+- Violations: Breaches of rules, regulations, or laws related to the property
+- Liens: Legal claims against the property for unpaid debts
+- Collections: Attempts to recover money owed related to the property
+- Delinquencies: Overdue payments or unfulfilled financial obligations related to the property
+
+Instructions:
+1. Read the entire document content carefully.
+2. For each category (violations, liens, collections, delinquencies, and other similar issues), analyze whether there is evidence of any issues.
+3. Use the following criteria for your answers:
+   - "Yes" if you find clear evidence of an issue. Provide specific details.
+   - "No" if you find explicit information stating there are no such issues.
+   - "N/A" if you find no information about these issues.
+   - "Unclear" if the information is ambiguous or you have doubts. Explain your reasoning.
+4. Disregard regular assessments, fees, or dues that are due or outstanding.
+5. Prioritize accuracy. If you're unsure about any aspect, indicate that the information is unclear.
+
+Before providing your final extraction, conduct a thorough analysis in <analysis> tags inside your thinking block. In this section:
+- List potential indicators or keywords for each category.
+- Quote relevant sections from the document content for each category.
+- Consider both explicit and implicit evidence.
+- Analyze the strength and relevance of each piece of evidence.
+- Consider alternative interpretations of the information.
+- Express any uncertainties or ambiguities you encounter.
+- Show your thought process and reasoning for each category.
+
+After your analysis, provide your final extraction in the following format:
+
+<extraction>
+Violations: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
+
+Liens: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
+
+Collections: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
+
+Delinquencies: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
+
+Other similar issues: [Yes/No/N/A/Unclear]
+[If Yes or Unclear, provide details and context]
+</extraction>
+
+Remember to:
+- Take your time to carefully analyze the document.
+- Consider multiple perspectives before making a decision.
+- Provide well-reasoned, detailed responses when necessary.
+- Express uncertainty when appropriate rather than making unfounded claims.
+
+Your thorough and accurate analysis is crucial for making informed decisions about the property's status.
+
+Your final output should consist only of the extraction and should not duplicate or rehash any of the work you did in the analysis section."""
 
 # Prompt for extracting assessment information
 ASSESSMENTS_PROMPT = """You are tasked with reviewing a PDF file containing information about property assessments and dues.
