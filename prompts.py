@@ -1,5 +1,7 @@
+# Updated prompts file with all prompts
 # Main prompt for date extraction
-DATES_PROMPT = """You are tasked with reviewing a PDF document and extracting specific dates. This task is crucial,
+DATES_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings.
+You are tasked with reviewing a PDF document and extracting specific dates. This task is crucial,
 and accuracy is of utmost importance. 
 
 Your goal is to precisely extract three dates from the PDF:
@@ -48,17 +50,19 @@ Closing Date: [Insert date or N/A or Unclear]
 Dues/Assessments paid to/through: [Insert date or N/A or Unclear]
 </extracted_dates>
 
-Remember, accuracy is critical. It's better to admit uncertainty than to provide incorrect
-information. If you cannot find a date or are unsure about its accuracy, use "N/A" or "Unclear"
-accordingly.
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A".
+
 
 Here is the content to analyze:
 {content}
 """
 
 # Prompt for extracting address and names
-ADDRESS_NAMES_PROMPT = """You are tasked with reviewing a PDF document and extracting specific information. This task is
-crucial, and accuracy is of utmost importance. The content of the PDF is provided below:
+ADDRESS_NAMES_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings. 
+You are tasked with reviewing a PDF document and extracting specific information. This task is
+crucial, and accuracy is of utmost importance.
 
 Your goal is to precisely extract the following information from the PDF:
 1. Property Address
@@ -99,25 +103,22 @@ Seller Name: [Insert name or N/A or Unclear]
 Buyer Name: [Insert name or N/A or Unclear]
 </extraction>
 
-Remember, it is better to state "Unclear" if you have any doubts rather than risking providing
-incorrect information. The accuracy of this extraction is mission-critical, so take extra care in
-your review and extraction process.
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A".
+
 
 Here is the content to analyze:
 {content}
 """
 
 # Prompt for extracting violations, liens, and collections information
-VIOLATIONS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings. Your goal is to carefully examine the provided PDF content from a document used for real estate closingsand identify any violations, liens, collections, delinquencies, or similar issues that may affect the property's status. 
+VIOLATIONS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings. 
+You are tasked with reviewing a PDF document and identifying any violations, liens, collections, delinquencies, or similar issues that may affect the property's status. 
+This task is crucial, and accuracy is of utmost importance. 
 
 
-Here is the content of the PDF document you need to analyze:
-
-<pdf_content>
-{content}
-</pdf_content>
-
-Your task is to thoroughly review this content and determine if there are any:
+Your goal is to review the PDF and precisely determine if there are any:
 1. Violations
 2. Liens
 3. Collections
@@ -177,18 +178,20 @@ Other similar issues: [Yes/No/N/A/Unclear]
 [If Yes or Unclear, provide details and context]
 </extraction>
 
-Remember, hyper-accuracy is crucial for this task. Take your time to carefully analyze the document and provide well-reasoned, detailed responses when necessary."""
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A".
+
+Here is the content to analyze:
+{content}"""
 
 # Prompt for Gemini 2.5 Pro model - thinking-based approach
-VIOLATIONS_PROMPT_THINKING = """You are a highly experienced Title & Escrow officer working on real estate closings. Your goal is to carefully examine the provided PDF content from a document used for real estate closingsand identify any violations, liens, collections, delinquencies, or similar issues that may affect the property's status. 
+VIOLATIONS_PROMPT_THINKING = """You are a highly experienced Title & Escrow officer working on real estate closings. 
+You are tasked with reviewing a PDF document and identifying any violations, liens, collections, delinquencies, or similar issues that may affect the property's status. 
+This task is crucial, and accuracy is of utmost importance. 
 
-Here is the content of the document you need to analyze:
 
-<property_document>
-{content}
-</property_document>
-
-Your primary objective is to thoroughly review this content and determine if there are any:
+Your goal is to review the PDF and precisely determine if there are any:
 1. Violations
 2. Liens
 3. Collections
@@ -257,16 +260,19 @@ Remember to:
 
 Your thorough and accurate analysis is crucial for making informed decisions about the property's status.
 
-Your final output should consist only of the extraction and should not duplicate or rehash any of the work you did in the analysis section."""
+Your final output should consist only of the extraction and should not duplicate or rehash any of the work you did in the analysis section.
+
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A".
+
+Here is the content to analyze:
+{content}"""
 
 # Prompt for extracting assessment information
-ASSESSMENTS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings. You are specializing in extracting specific financial information from real estate documents. Your task is to analyze the following PDF content and extract key details about regular assessments (dues).
-
-Here is the content of the PDF to analyze:
-
-<pdf_content>
-{{PDF_CONTENT}}
-</pdf_content>
+ASSESSMENTS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings.
+You are tasked with reviewing a PDF document and extracting key details about regular assessments (dues). This task is crucial,
+and accuracy is of utmost importance.
 
 Your goal is to extract the following information:
 1. Amount of regular assessments (dues)
@@ -313,19 +319,22 @@ Example output structure:
 [Brief explanation for each extracted item, including why you chose N/A or Unclear if applicable]
 </reasoning>
 
-Remember, accuracy is crucial. It's better to state "Unclear" than to provide incorrect information. Please proceed with your analysis and extraction based on the provided PDF content.
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A".
+
+Here is the content to analyze:
+{content}
 """
 
 # Prompt for analyzing document attachments
-ATTACHMENTS_PROMPT = """You are tasked with reviewing a PDF document to determine if there is any mention of attachments or
-attached documents. This task is mission critical, so accuracy is of utmost importance. Please
-follow these instructions carefully:
+ATTACHMENTS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings.
+You are tasked with reviewing a PDF document and determinig if there is any mention of attachments or
+attached documents. This task is crucial, and accuracy is of utmost importance.
+
+Please follow these instructions carefully:
 
 1. Carefully read through the following PDF content:
-
-<pdf_content>
-{content}
-</pdf_content>
 
 2. As you review the content, pay close attention to any words or phrases that might indicate the
 presence of attachments or additional documents. Look for keywords such as:
@@ -354,33 +363,39 @@ Yes, [name of the attached document(s)]
 you have not missed any mentions of attachments, no matter how subtle they might be.
 
 6. Do not include any additional explanations or justifications in your answer. Stick strictly to
-the format provided in step 4."""
+the format provided in step 4.
+
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A".
+
+Here is the content to analyze:
+{content}"""
 
 # Prompt for identifying additional associations and districts
-EXTRA_ASSOCIATIONS_PROMPT = """You are tasked with reviewing a PDF document to identify any mentions of additional homeowners
-associations or special districts. This task is critically important and requires careful attention
-to detail.
+EXTRA_ASSOCIATIONS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings.
+You are tasked with reviewing a PDF document to identify any mentions of additional homeowners
+associations or special districts. This task is crucial, and accuracy is of utmost importance.
 
-First, you will be provided with the content of the PDF document:
+Please follow these instructions carefully:
 
-<pdf_content>
-{content}
-</pdf_content>
+1. Carefully read and analyze the entire content of the PDF. 
 
-Carefully read and analyze the entire content of the PDF. Pay close attention to any mentions of:
+2. Pay close attention to any mentions of additional or extra:
+   a. Homeowners associations (HOAs), including:
+   - Sub associations
+   - Master associations
+   - Any other type of association related to property management
+   b. Special districts, such as:
+   - Metro districts
+   - Water districts
+   - Fire districts
+   - Any other type of special district
 
-1. Homeowners associations (HOAs), including:
-- Sub associations
-- Master associations
-- Any other type of association related to property management
+3. It is extremely important so I will reiterate it - we are looking for additional homeowners associations or special districts - we are
+NOT interested in the HOA or special district for which the PDF is about.
 
-2. Special districts, such as:
-- Metro districts
-- Water districts
-- Fire districts
-- Any other type of special district
-
-After your analysis, provide your answer in the following format:
+3. After your analysis, provide your answer in the following format:
 
 1. If there are no mentions of additional homeowners associations or special districts:
 <answer>No</answer>
@@ -398,39 +413,36 @@ Examples of correct responses:
 2. <answer>Yes, Lakeside Master Association, Cherry Creek Water District</answer>
 3. <answer>Yes, Pinecrest Sub Association</answer>
 
-Ensure that your response is precise and based solely on the information provided in the PDF
-content. Do not make assumptions or include information not explicitly mentioned in the document."""
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A".
+
+Here is the content to analyze:
+{content}"""
 
 # Prompt for analyzing document costs and rush fees
-DOC_COSTS_PROMPT = """You are tasked with reviewing a PDF document and answering specific questions about its content. The
-content of the PDF is provided below:
+DOC_COSTS_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings.
+You are tasked with reviewing a PDF document to identify and extract several types of costs and fees. 
+This task is crucial, and accuracy is of utmost importance.
 
-<pdf_content>
-{content}
-</pdf_content>
+Please follow these instructions carefully. For each question, follow these specific instructions:
 
-Carefully read and analyze the content above. Your task is to answer four specific questions about
-the document. It is crucial that you answer these questions accurately and precisely, as getting
-this right is mission critical.
+1. Carefully read and analyze the entire content of the PDF. 
 
-For each question, follow these specific instructions:
-
-1. How much does the document cost?
-- Look for any mention of document cost or fees.
-- Answer with a number (e.g., 50) or N/A if not applicable.
-- Do not include any currency symbols or additional text.
-
-2. Was it ordered on a rush?
-- Look for any indication of rush or expedited service.
-- Answer with Yes or No only.
-- Do not include any additional explanation.
-
-3. How much is the rush fee?
-- If a rush service was indicated, look for the associated fee.
-- Answer with a number (e.g., 25) or N/A if notapplicable.
-- Do not include any currency symbols or additional text.
-
-4. Are the document cost and rush fee prepaid or are they owed at closing?
+2. Answer the following questions:
+    a. How much does the document cost?
+        - Look for any mention of document cost or fees.
+        - Answer with a number (e.g., 50) or N/A if not applicable.
+        - Do not include any currency symbols or additional text.
+    b. Was this document ordered on a rush?
+        - Look for any indication of rush or expedited service.
+        - Answer with Yes or No only.
+        - Do not include any additional explanation.
+    c. If the document was ordered on a rush
+        - Look for the associated rush fee.
+        - Answer with a number (e.g., 25) or N/A if not applicable.
+        - Do not include any currency symbols or additional text.
+    d. Are the document cost and rush fee prepaid or are they owed at closing?
 - Look for information about when the fees are to be paid.
 - Answer with one of these exact phrases: "pre-paid", "due at closing", or "N/A".
 - Use "N/A" if the information is unclear or not provided.
@@ -444,32 +456,34 @@ After analyzing the document, provide your answers in the following format:
 4. [Insert answer for payment timing]
 </answers>
 
-Remember, precision is key. Only include the exact answers as instructed, with no additional text or
-explanations. Double-check your answers to ensure they accurately reflect the information in the
-document."""
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A". Double-check your answers to ensure they accurately reflect the information in the
+document.
+
+Here is the content to analyze:
+{content}"""
 
 # Prompt for extracting HOA and property management company names
-HOA_NAMES_PROMPT = """You are tasked with reviewing a PDF document to extract specific information. This task is
-mission-critical, and accuracy is of utmost importance. The PDF content is provided below:
+HOA_NAMES_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings.
+You are tasked with reviewing a PDF document to identify and extract several types of costs and fees. 
+This task is crucial, and accuracy is of utmost importance.
 
-<pdf_content>
-{content}
-</pdf_content>
+Please follow these instructions carefully. 
 
-Your task is to carefully review the above PDF content and precisely identify two pieces of
-information:
-
-1. The name of the homeowners association (HOA)
-2. The name of the property management company (PM)
-
-Instructions:
-1. Thoroughly read through the entire PDF content.
+1. Carefully read and analyze the entire content of the PDF. 
 2. Look for any mentions of a homeowners association, HOA, or similar terms that would indicate the
 name of the HOA.
-3. Search for references to a property management company, property manager, or similar terms that
-would reveal the name of the PM.
-4. If you find the information, extract it exactly as it appears in the document.
-5. If you cannot find the information for either the HOA or PM, use "N/A" for that field.
+3. Look for any mentions of a property management company, PM, or similar terms that would indicate the
+name of the PM.
+4. Find and extract the name of the homeowners association (HOA)
+5. Find and extract The name of the property management company (PM)
+6. If "master" is part of the homeowners association name, make sure to include it in the name
+7. If you find the information, extract it exactly as it appears in the document.
+8. Never mistake the PM for the HOA and vice versa - they cannot be the same entity.
+9. Never assume the HOA or PM is anyone in this lsit (InspectHOA, Rexera, IHClosing, Point72 Realty, Newrez)
+10. Never assume the HOA or PM is a title and escrow company.
+11. If you cannot find the information for either the HOA or PM, use "N/A" for that field.
 
 Provide your answer in the following format:
 <answer>
@@ -488,34 +502,39 @@ HOA: Sunnyville Estates Homeowners Association
 PM: N/A
 </answer>
 
-Please proceed with the review and provide your findings in the specified format."""
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A". Double-check your answers to ensure they accurately reflect the information in the
+document.
+
+Here is the content to analyze:
+{content}"""
 
 # Prompt for determining if buyer approval is required
-BUYER_APPROVAL_PROMPT = """You are tasked with reviewing a PDF document and determining if buyer approval is required. This
-task is mission critical, so it's essential to be precise and accurate in your analysis.
+BUYER_APPROVAL_PROMPT = """You are a highly experienced Title & Escrow officer working on real estate closings.
+You are tasked with reviewing a PDF document and determining if buyer approval by the association is required before the purchase. 
+The context is that some associations need to approve a potential buyer before they can purchase a property. 
+This task is crucial, and accuracy is of utmost importance.
 
-First, carefully read through the following PDF content:
 
-<pdf_content>
-{content}
-</pdf_content>
-
-Your task is to determine if buyer approval is required based on the information provided in the
-PDF. Here's how to approach this task:
+Please follow these instructions carefully. 
 
 1. Thoroughly review the entire PDF content, paying close attention to any mentions of buyer
-approval, authorization processes, or decision-making requirements.
+approval by the association related to the purchase of the property.
 
-2. Look for explicit statements about buyer approval being necessary for any actions or decisions.
+2. Look for explicit statements about buyer approval by the association being necessary before purchase. 
 
-3. If you find any information indicating that buyer approval is required, note the specific
-details, including under what circumstances, for what actions, and any relevant procedures or
-timelines.
+3. If you find any information indicating that buyer approval by the association before purchase is required, note the specific
+details.
 
-4. If you don't find any information about buyer approval being required, consider this as a "No"
+4. Ignore any buyer approval for anything except for the purchase.
+
+5. Ignore any approval that the buyer needs to receive from the seller for any actions of the seller.
+
+6. If you don't find any information about buyer approval being required, consider this as a "No"
 answer.
 
-5. Be cautious not to infer or assume buyer approval is required unless it is explicitly stated in
+7. Be cautious not to infer or assume buyer approval is required unless it is explicitly stated in
 the document.
 
 Format your answer as follows:
@@ -525,9 +544,16 @@ Format your answer as follows:
 2. If the answer is "Yes," provide a detailed explanation of the buyer approval requirements,
 including any relevant quotes from the PDF (use quotation marks for direct quotes).
 
-3. If the answer is "No," simply state that no information regarding buyer approval requirements was
-found in the document.
+3. If the answer is "No," simply state "No"
 
 4. Enclose your entire response in <answer> tags.
 
-Now, please analyze the PDF content and provide your findings in the specified format."""
+Now, please analyze the PDF content and provide your findings in the specified format.
+
+The accuracy of this extraction is mission-critical, so take extra care in
+your review and extraction process. It's better to state "Unclear" if you have any doubts than to provide incorrect
+information. If you cannot find a date use "N/A". Double-check your answers to ensure they accurately reflect the information in the
+document.
+
+Here is the content to analyze:
+{content}"""
